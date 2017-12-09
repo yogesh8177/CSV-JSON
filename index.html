@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>CSV-JSON</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .confine {
+        width: 100%; overflow: scroll;
+        background-color: lightcyan;
+      }
+
+      .values {
+        border-radius: 4px;
+        background-color: lightskyblue;
+        padding: 4px;
+        color: #fff;
+      }
+      .stats-list li {
+        list-style-type: none;
+        padding: 5px;
+      }
+
+      .values-list li {
+        width: fit-content;
+        margin-top: 4px;
+        padding: 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CSV-JSON Stats</h1>
+    <!-- All of the Node.js APIs are available in this renderer process. -->
+    We are using Node.js <script>document.write(process.versions.node)</script>,
+    Chromium <script>document.write(process.versions.chrome)</script>,
+    and Electron <script>document.write(process.versions.electron)</script>.
+    <hr/>
+    <ul class="stats-list">
+      <li><label>Select csv: </label> <input type="file" id="fileUpload"></li>
+      <li><label>File: </label> <strong id="fileName"></strong></li>
+      <li><label>Headers: </label> <strong id="headers"></strong></li>
+      <li><label>Total Lines: </label> <strong id="totalLines"></strong></li>
+      <li><label>Missing Values </label>
+        <hr/>
+          <pre class="confine">
+            <code>
+              <span id="missingValues"></span>
+            </code>
+          </pre>
+        <hr/>
+      </li>
+      <li><label>Duplicates</label>
+        <hr/>
+        <pre class="confine">
+          <code>
+            <span id="duplicates"></span>
+          </code>
+        </pre>
+        <hr/>
+      </li>
+      <li><label>File Content</label>
+        <hr/>
+        <pre class="confine">
+          <code>
+            <span id="fileContents"></span>
+          </code>
+        </pre>
+        <hr/>
+      </li>
+    </ul>
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+  </body>
+</html>
