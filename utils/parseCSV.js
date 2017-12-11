@@ -50,13 +50,13 @@ exports.parseCSV = (contents) => {
             console.log('Parsed Object');
             console.log(jsonObj);
             var date = new Date();
-            fs.writeFile(`Json-${date}.json`, JSON.stringify(jsonObj, 2)
+            fs.writeFile(`files/Json-${date}.json`, JSON.stringify(jsonObj, 2)
             , (error) => {
                 console.log(error);
                 throw error;
             });
 
-            fs.writeFile(`Duplicates-${date}.json`, JSON.stringify(duplicates, 2)
+            fs.writeFile(`files/Duplicates-${date}.json`, JSON.stringify(duplicates, 2)
             , (error) => {
                 console.log(error);
                 throw error;
