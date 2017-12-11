@@ -1,12 +1,13 @@
 let fs = require('fs');
 
-exports.parseCSV = (contents) => {
+exports.parseCSV = (contents, fileName) => {
     let headerKeys,
         totalLines,
         missingValues,
         duplicateValues,
         duplicates,
-        jsonObj;
+        jsonObj,
+        parsedJson;
     return new Promise((resolve, reject) => {
         try {
             let array = contents.split(/\n/);
@@ -21,7 +22,23 @@ exports.parseCSV = (contents) => {
             duplicateValues = {};
             duplicates = {};
             jsonObj = {};
-        console.log('heasers', headerKeys);
+            parsedJson = [];
+        console.log('headers', headerKeys);
+
+            // create parsedJson
+
+            for (let line = 0; line < totalLines; line++) {
+                var object = {};
+                headerKeys.forEach((header, index) => {
+                    header = header.replace(/^"(.*)"$/, '$1');
+                    let valueArray = content[line].split(',');
+                    let value = valueArray[index] ? valueArray[index].replace(/^"(.*)"$/, '$1') : "";
+                    object[header] = value;
+                });
+                parsedJson.push(object); 
+            }
+
+            // Calculate statistics
             headerKeys.forEach((header, index) => {
                 header = header.replace(/^"(.*)"$/, '$1');
                 jsonObj[header] = [];
@@ -50,17 +67,23 @@ exports.parseCSV = (contents) => {
             console.log('Parsed Object');
             console.log(jsonObj);
             var date = new Date();
-            fs.writeFile(`files/Json-${date}.json`, JSON.stringify(jsonObj, 2)
+            fs.writeFile(`files/${fileName}-json-${date}.json`, JSON.stringify(jsonObj, 2)
             , (error) => {
                 console.log(error);
                 throw error;
             });
 
-            fs.writeFile(`files/Duplicates-${date}.json`, JSON.stringify(duplicates, 2)
+            fs.writeFile(`files/${fileName}-array-${date}.json`, JSON.stringify(parsedJson, 2)
             , (error) => {
                 console.log(error);
                 throw error;
-            })
+            });
+
+            fs.writeFile(`files/${fileName}-duplicate-${date}.json`, JSON.stringify(duplicates, 2)
+            , (error) => {
+                console.log(error);
+                throw error;
+            });
         }
         catch (error) {
             return reject(error);
@@ -70,7 +93,8 @@ exports.parseCSV = (contents) => {
             totalLines: totalLines,
             headers: headerKeys,
             missingValues: missingValues,
-            duplicateValues: duplicates
+            duplicateValues: duplicates,
+            parsedJson: parsedJson
         });
     });
 }

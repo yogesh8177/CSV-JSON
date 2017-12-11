@@ -31,7 +31,7 @@ fileInput.onchange = (event) => {
     document.getElementById('fileName').innerHTML = file.name;
     fileRead(file)
     .then((contents) => {
-        parseCSV(contents)
+        parseCSV(contents, file.name)
         .then((result) => {
             updateTemplate(result);
         });
@@ -51,7 +51,7 @@ function updateTemplate (result) {
     document.getElementById('missingValues').innerHTML = JSON.stringify(result.missingValues);
     document.getElementById('totalLines').innerHTML = `Total Lines (excluding headers) ${result.totalLines}`
     document.getElementById('duplicates').innerHTML = JSON.stringify(result.duplicateValues);
-    document.getElementById('fileContents').innerHTML = JSON.stringify(result.json, null, "\t");
+    document.getElementById('fileContents').innerHTML = JSON.stringify(result.parsedJson, null, "\t");
 }
 // IPC communication....
 
